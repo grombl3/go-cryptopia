@@ -4,7 +4,6 @@ package cryptopia
 import (
 	"encoding/json"
 	"errors"
-	"fmt"
 )
 
 const (
@@ -23,6 +22,14 @@ func New(apiKey, apiSecret string) *Cryptopia {
 func handleErr(r jsonResponse) error {
 	if !r.Success {
 		return errors.New(r.Message)
+	}
+	return nil
+}
+
+// handleErr gets JSON response from Cryptopia API en deal with error
+func handleErr2(r jsonResponse) error {
+	if r.Error != "" {
+		return errors.New(r.Error)
 	}
 	return nil
 }
@@ -137,7 +144,7 @@ func (b *Cryptopia) GetMarkets() (markets []Market, err error) {
 // GetMarket Returns a market
 func (b *Cryptopia) GetMarket(pair string, hours int32) (market Market, err error) {
 	r, err := b.client.do("GET", "GetMarket/" + pair, "", false)
-	fmt.Println(string(r))
+	//fmt.Println(string(r))
 	if err != nil {
 		return
 	}
@@ -148,7 +155,10 @@ func (b *Cryptopia) GetMarket(pair string, hours int32) (market Market, err erro
 	if err = handleErr(response); err != nil {
 		return
 	}
-	err = json.Unmarshal(response.Result, &market)
 
+	err = json.Unmarshal(response.Result, &market)
+	if err2 := handleErr2(response); err2 != nil {
+		err = err2
+	}
 	return
 }
