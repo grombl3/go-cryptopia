@@ -4,6 +4,7 @@ package cryptopia
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 )
 
 const (
@@ -147,5 +148,6 @@ func (b *Cryptopia) GetMarket(pair string, hours int32) (market Market, err erro
 		return
 	}
 	err = json.Unmarshal(response.Result, &market)
+	fmt.Println(response)
 	return
 }
