@@ -133,8 +133,8 @@ func (b *Cryptopia) GetMarkets() (markets []Market, err error) {
 	return
 }
 
-// GetMarket Returns a list of markets
-func (b *Cryptopia) GetMarket(pair string, hours int32) (markets Market, err error) {
+// GetMarket Returns a market
+func (b *Cryptopia) GetMarket(pair string, hours int32) (market Market, err error) {
 	r, err := b.client.do("GET", "GetMarket/" + pair, "", false)
 	if err != nil {
 		return
@@ -146,6 +146,6 @@ func (b *Cryptopia) GetMarket(pair string, hours int32) (markets Market, err err
 	if err = handleErr(response); err != nil {
 		return
 	}
-	err = json.Unmarshal(response.Result, &markets)
+	err = json.Unmarshal(response.Result, &market)
 	return
 }

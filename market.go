@@ -17,4 +17,5 @@ type Market struct {
 	BaseVolume     float64 `json:"BaseVolume"`
 	BaseBuyVolume  float64 `json:"BaseBuyVolume"`
 	BaseSellVolume float64 `json:"BaseSellVolume"`
+	Error          string  `json:"Error"`
 }
