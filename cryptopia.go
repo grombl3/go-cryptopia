@@ -133,9 +133,14 @@ func (b *Cryptopia) GetMarkets() (markets []Market, err error) {
 	return
 }
 
-// GetMarkets Returns a list of markets
+// GetMarket Returns a list of markets
 func (b *Cryptopia) GetMarket(pair string, hours int32) (markets Market, err error) {
-	r, err := b.client.do("GET", "GetMarket", pair, false)
+
+	payload, err := json.Marshal(pair)
+	if err != nil {
+		return
+	}
+	r, err := b.client.do("GET", "GetMarket", string(payload), false)
 	if err != nil {
 		return
 	}
