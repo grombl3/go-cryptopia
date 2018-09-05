@@ -132,3 +132,20 @@ func (b *Cryptopia) GetMarkets() (markets []Market, err error) {
 	err = json.Unmarshal(response.Result, &markets)
 	return
 }
+
+// GetMarkets Returns a list of markets
+func (b *Cryptopia) GetMarket(pair string, hours int32) (markets Market, err error) {
+	r, err := b.client.do("GET", "GetMarket", pair, false)
+	if err != nil {
+		return
+	}
+	var response jsonResponse
+	if err = json.Unmarshal(r, &response); err != nil {
+		return
+	}
+	if err = handleErr(response); err != nil {
+		return
+	}
+	err = json.Unmarshal(response.Result, &markets)
+	return
+}
